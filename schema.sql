@@ -4,7 +4,8 @@ CREATE TABLE IF NOT EXISTS users (
   username TEXT UNIQUE NOT NULL,
   full_name TEXT NOT NULL,
   password TEXT NOT NULL,
-  role TEXT NOT NULL
+  role TEXT NOT NULL,
+  profile_picture TEXT 
 );
 
 CREATE TABLE IF NOT EXISTS content (
