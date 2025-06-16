@@ -4,6 +4,7 @@ import adminAuth from "../Middleware/AdminAuth.js";
 
 const router = express.Router();
 
+//create content for user
 router.post("/", async (req, res) => {
   const { user_id, title, description, type, image } = req.body;
 
@@ -19,6 +20,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+//get content created by user
 router.get("/created/:user_id", async (req, res) => {
   try {
     const result = await db.query(
@@ -31,6 +33,7 @@ router.get("/created/:user_id", async (req, res) => {
   }
 });
 
+//save content for users
 router.post("/save/:content_id", async (req, res) => {
   const { user_id } = req.body;
 
@@ -46,6 +49,7 @@ router.post("/save/:content_id", async (req, res) => {
   }
 });
 
+//get saved content for user
 router.get("/saved/:user_id", async (req, res) => {
   try {
     const result = await db.query(
@@ -61,6 +65,7 @@ router.get("/saved/:user_id", async (req, res) => {
   }
 });
 
+//update content for users
 router.put("/:content_id", async (req, res) => {
   const { title, description, type, user_id, image } = req.body;
 
@@ -83,6 +88,7 @@ router.put("/:content_id", async (req, res) => {
   }
 });
 
+//delete content for admin
 router.delete("/:content_id", adminAuth, async (req, res) => {
   try {
 
@@ -106,10 +112,11 @@ router.delete("/:content_id", adminAuth, async (req, res) => {
   }
 });
 
+//read all content for admin
 router.get("/all", adminAuth, async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM content ORDER BY time DESC");
-    res.json(result.rows); // return directly the array
+    res.json(result.rows);
   } catch (err) {
     console.error("❌ Failed to fetch all content:", err.message);
     res.status(500).json({ error: "Failed to fetch all content" });
