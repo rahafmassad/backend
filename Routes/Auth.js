@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, username, full_name, profile_picture } = req.body;
 
     const exists = await db.query("SELECT * FROM users WHERE email = $1", [email]);
     if (exists.rows.length > 0) {
@@ -15,8 +15,10 @@ router.post("/signup", async (req, res) => {
     const role = "user";
 
     const result = await db.query(
-      "INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING *",
-      [email, password, role]
+      `INSERT INTO users (email, password, username, full_name, role, profile_picture)
+       VALUES ($1, $2, $3, $4, $5, $6)
+       RETURNING *`,
+      [email, password, username, full_name, role, profile_picture || null]
     );
 
     res.status(201).json({ user: result.rows[0] });

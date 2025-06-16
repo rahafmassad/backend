@@ -4,6 +4,7 @@ import adminAuth from "../Middleware/AdminAuth.js";
 
 const router = express.Router();
 
+//get all users for admin read
 router.get("/all", adminAuth, async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM users");
@@ -13,13 +14,21 @@ router.get("/all", adminAuth, async (req, res) => {
   }
 });
 
+//update for users
 router.put("/:id", async (req, res) => {
-  const { email, role } = req.body;
+  const { email, role, username, full_name, profile_picture } = req.body;
 
   try {
     const result = await db.query(
-      "UPDATE users SET email = $1, role = $2 WHERE id = $3 RETURNING *",
-      [email, role, req.params.id]
+      `UPDATE users
+       SET email = $1,
+           role = $2,
+           username = $3,
+           full_name = $4,
+           profile_picture = $5
+       WHERE id = $6
+       RETURNING *`,
+      [email, role, username, full_name, profile_picture, req.params.id]
     );
 
     if (result.rows.length === 0) {
@@ -28,10 +37,12 @@ router.put("/:id", async (req, res) => {
 
     res.json({ message: "User updated", user: result.rows[0] });
   } catch (err) {
+    console.error("User update error:", err.message);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
+//delete users by admin
 router.delete("/:id", adminAuth, async (req, res) => {
   try {
     const result = await db.query(
@@ -50,7 +61,7 @@ router.delete("/:id", adminAuth, async (req, res) => {
   }
 });
 
-//savedcontent
+//savedcontent for users
 router.get("/content/:email", async (req, res) => {
   const { email } = req.params;
 
@@ -66,6 +77,5 @@ router.get("/content/:email", async (req, res) => {
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
-
 
 export default router;
