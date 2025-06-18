@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
+    console.log("Signup request body:", req.body);
     const { email, password, username, full_name, profile_picture } = req.body;
 
     const exists = await db.query("SELECT * FROM users WHERE email = $1", [email]);
@@ -45,7 +46,7 @@ router.post("/signin", async (req, res) => {
 
     if (user.role === "admin") {
       return res.json({
-        message: "Welcome, Admin!",
+        message: "Welcome, admin",
         redirectTo: "/admin-dashboard",
         user
       });

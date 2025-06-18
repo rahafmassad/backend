@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS content (
   title TEXT NOT NULL,
   description TEXT,
   type TEXT,
+  image TEXT,
   time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -35,10 +36,4 @@ CREATE TABLE IF NOT EXISTS likes (
   user_id INT REFERENCES users(id) ON DELETE CASCADE,
   content_id INT REFERENCES content(content_id) ON DELETE CASCADE,
   PRIMARY KEY(user_id, content_id)
-);
-
-CREATE TABLE IF NOT EXISTS follow (
-  follower_id INT REFERENCES users(id) ON DELETE CASCADE,
-  following_id INT REFERENCES users(id) ON DELETE CASCADE,
-  PRIMARY KEY(follower_id, following_id)
 );

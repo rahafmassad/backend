@@ -14,21 +14,30 @@ router.get("/all", adminAuth, async (req, res) => {
   }
 });
 
+//get all users for user read
+router.get("/all_users", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM users");
+    res.json({ users: result.rows });
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 //update for users
 router.put("/:id", async (req, res) => {
-  const { email, role, username, full_name, profile_picture } = req.body;
+  const { email, username, full_name, profile_picture } = req.body;
 
   try {
     const result = await db.query(
       `UPDATE users
        SET email = $1,
-           role = $2,
-           username = $3,
-           full_name = $4,
-           profile_picture = $5
-       WHERE id = $6
+           username = $2,
+           full_name = $3,
+           profile_picture = $4
+       WHERE id = $5
        RETURNING *`,
-      [email, role, username, full_name, profile_picture, req.params.id]
+      [email, username, full_name, profile_picture, req.params.id]
     );
 
     if (result.rows.length === 0) {
@@ -56,7 +65,7 @@ router.delete("/:id", adminAuth, async (req, res) => {
 
     res.json({ message: "User deleted", deletedUser: result.rows[0] });
   } catch (err) {
-    console.error("❌ User deletion error:", err.message);
+    console.error("User deletion error:", err.message);
     res.status(500).json({ error: "Failed to delete user" });
   }
 });

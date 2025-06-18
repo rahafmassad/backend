@@ -18,7 +18,7 @@ router.get("/partners/:user_id", async (req, res) => {
     );
     res.json({ partners: result.rows });
   } catch (err) {
-    console.error("❌ Fetch chat partners error:", err.message);
+    console.error("Fetch chat partners error:", err.message);
     res.status(500).json({ error: "Failed to fetch chat partners" });
   }
 });
@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
     );
     res.status(201).json({ chat: result.rows[0] });
   } catch (err) {
-    console.error("❌ Chat send error:", err.message);
+    console.error("Chat send error:", err.message);
     res.status(500).json({ error: "Failed to send message" });
   }
 });
@@ -52,7 +52,7 @@ router.get("/:user1_id/:user2_id", async (req, res) => {
     );
     res.json({ messages: result.rows });
   } catch (err) {
-      console.error("❌ Fetch chat partners error:", err.message);
+      console.error("Fetch chat partners error:", err.message);
       res.status(500).json({ error: "Failed to fetch chat partners" });
   }
 });

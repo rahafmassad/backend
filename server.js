@@ -9,15 +9,15 @@ import contentRoutes from "./Routes/Content.js";
 import chatRoutes from "./Routes/Chat.js";
 import searchRoutes from "./Routes/Search.js";
 import likeRoutes from "./Routes/Likes.js";
-import followRoutes from "./Routes/Follow.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001; // 
 
+app.use(express.json({ limit: '50mb' })); //for profile picture
+app.use(express.urlencoded({ extended: true, limit: '50mb' })); //for profile picture
 app.use(cors());
-app.use(express.json());
 app.use(morgan("dev"));
 
 // localhost:5000
@@ -27,19 +27,18 @@ app.use("/api/content", contentRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/likes", likeRoutes);
-app.use("/api/follow", followRoutes);
 
 app.get("/", (req, res) => {
-  res.send("✅ Store API (PostgreSQL) is running");
+  res.send("Store API (PostgreSQL) is running");
 });
 
 try {
   await db.connect();
-  console.log("✅ Connected to PostgreSQL");
+  console.log("Connected to PostgreSQL");
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
   });
 } catch (err) {
-  console.error("❌ Failed to connect to DB:", err.stack);
+  console.error("Failed to connect to DB:", err.stack);
   process.exit(1);
 }

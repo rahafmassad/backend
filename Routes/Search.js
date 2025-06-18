@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
       users: userResult.rows
     });
   } catch (err) {
-    console.error("❌ Search error:", err.message);
+    console.error("Search error:", err.message);
     res.status(500).json({ error: "Failed to perform search" });
   }
 });

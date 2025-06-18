@@ -1,10 +1,8 @@
-// Routes/Likes.js
 import express from "express";
 import db from "../db.js";
 
 const router = express.Router();
 
-// Toggle like/unlike
 router.post("/", async (req, res) => {
   const { user_id, content_id } = req.body;
   try {
@@ -27,12 +25,11 @@ router.post("/", async (req, res) => {
     );
     res.status(201).json({ liked: true, message: "Liked content" });
   } catch (err) {
-    console.error("❌ Like error:", err.message);
+    console.error("Like error:", err.message);
     res.status(500).json({ error: "Failed to toggle like" });
   }
 });
 
-// Get total likes for content
 router.get("/:content_id", async (req, res) => {
   try {
     const result = await db.query(
@@ -41,12 +38,11 @@ router.get("/:content_id", async (req, res) => {
     );
     res.json({ totalLikes: parseInt(result.rows[0].count) });
   } catch (err) {
-    console.error("❌ Fetch likes error:", err.message);
+    console.error("Fetch likes error:", err.message);
     res.status(500).json({ error: "Failed to fetch likes" });
   }
 });
 
-// Check if user liked content
 router.get("/:content_id/:user_id", async (req, res) => {
   try {
     const result = await db.query(
@@ -55,7 +51,7 @@ router.get("/:content_id/:user_id", async (req, res) => {
     );
     res.json({ liked: result.rows.length > 0 });
   } catch (err) {
-    console.error("❌ Check like error:", err.message);
+    console.error("Check like error:", err.message);
     res.status(500).json({ error: "Failed to check like" });
   }
 });
