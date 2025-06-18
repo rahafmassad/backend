@@ -42,3 +42,7 @@ try {
   console.error("Failed to connect to DB:", err.stack);
   process.exit(1);
 }
+
+process.on('uncaughtException', err => {
+  console.error("Uncaught Exception:", err);
+});
